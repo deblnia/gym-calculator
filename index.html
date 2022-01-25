@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>A Dumb Little Gym Calculator</title>
+    <style>
+      body {
+        margin: 40px auto;
+        max-width: 650px;
+        line-height: 1.6;
+        font-size: 18px;
+        color: #444;
+        padding: 0 10px;
+      }
+      .input-item input {
+        width: 30px;
+      }
+      .note {
+        color: grey;
+        font-style: italic;
+      }
+    </style>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script
+      async
+      src="https://platform.twitter.com/widgets.js"
+      charset="utf-8"
+    ></script>
+    <script>
+      function num(name) {
+        return parseInt($(name).val());
+      }
+      function show(name, value) {
+        $(name).text(isNaN(value) ? "....." : value.toFixed(2));
+      }
+      function update() {
+        let price = num("#price");
+        let pay_period = $("#pay_period").val();
+        let visits = num("#visits");
+        let visit_period = $("#visit_period").val();
+
+        //calculating logic -- 4.345 is the avg number of weeks in a month
+        if (pay_period === visit_period) {
+          let cost_per_visit = price / visits;
+          show("#cost_per_visit", cost_per_visit);
+        } else if (pay_period === "week" && visit_period === "month") {
+          let cost_per_visit = (price * 4.345) / visits;
+          show("#cost_per_visit", cost_per_visit);
+        } else if (pay_period === "week" && visit_period === "year") {
+          let cost_per_visit = (price * 52) / visits;
+          show("#cost_per_visit", cost_per_visit);
+        } else if (pay_period === "month" && visit_period === "week") {
+          let cost_per_visit = price / (visits * 4.345);
+          show("#cost_per_visit", cost_per_visit);
+        } else if (pay_period === "month" && visit_period === "year") {
+          let cost_per_visit = (price * 12) / visits;
+          show("#cost_per_visit", cost_per_visit);
+        } else if (pay_period === "year" && visit_period === "week") {
+          let cost_per_visit = price / (visits * 52);
+          show("#cost_per_visit", cost_per_visit);
+        } else if (pay_period === "year" && visit_period === "month") {
+          let cost_per_visit = price / (visits * 12);
+          show("#cost_per_visit", cost_per_visit);
+        }
+
+        // formatting emojis
+      }
+    </script>
+  </head>
+  <body>
+    <h1>A Dumb Little Gym Calculator</h1>
+
+    <blockquote class="twitter-tweet tw-align-center">
+      <p lang="en" dir="ltr">
+        nothing motivates me to go to the gym like knowing their business model
+        is literally betting on me not going
+      </p>
+      &mdash; Olivia Deng 🍌🧢 (@olivia_deng_)
+      <a
+        href="https://twitter.com/olivia_deng_/status/1485296791872589828?ref_src=twsrc%5Etfw"
+        >January 23, 2022</a
+      >
+    </blockquote>
+    <br />
+    <h2>Let's calculate how much money your gym makes off of you.</h2>
+    <p>
+      Let's say you pay 💰 $
+      <span class="input-item">
+        <input
+          type="number"
+          name="price"
+          value="1"
+          id="price"
+          onChange="update()"
+        />
+      </span>
+      💰 per
+      <span class="input-item">
+        <select id="pay_period" name="Time Period" onchange="update()">
+          <option value="week">Week</option>
+          <option value="month">Month</option>
+          <option value="year">Year</option>
+        </select>
+      </span>
+      for your gym, and go 💪
+      <span class="input-item">
+        <input
+          type="number"
+          name="visits"
+          value="1"
+          id="visits"
+          onChange="update()"
+        /> </span
+      >💪 time(s) per
+      <span class="input-item">
+        <select id="visit_period" name="Visits" onchange="update()">
+          <option value="week">Week</option>
+          <option value="month">Month</option>
+          <option value="year">Year</option></select
+        >.
+      </span>
+      <br />
+      <br />
+      Your cost per visit is $<span id="cost_per_visit"></span> 📈🤬📉🤑.
+    </p>
+    <p class="note">P.S. This calculator is open-source :)</p>
+  </body>
+</html>
